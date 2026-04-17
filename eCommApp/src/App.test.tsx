@@ -23,6 +23,10 @@ vi.mock('./components/CartPage', () => ({
     default: () => <div data-testid="cart-page">CartPage</div>
 }));
 
+vi.mock('./components/ContactPage', () => ({
+    default: () => <div data-testid="contact-page">ContactPage</div>
+}));
+
 describe('App', () => {
     beforeEach(() => {
         vi.clearAllMocks();
@@ -81,6 +85,15 @@ describe('App', () => {
             </MemoryRouter>
         );
         expect(screen.getByTestId('cart-page')).toBeInTheDocument();
+    });
+
+    it('renders ContactPage on /contact path', () => {
+        render(
+            <MemoryRouter initialEntries={['/contact']}>
+                <App />
+            </MemoryRouter>
+        );
+        expect(screen.getByTestId('contact-page')).toBeInTheDocument();
     });
 
     it('renders App without errors', () => {

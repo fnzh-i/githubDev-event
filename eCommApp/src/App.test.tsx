@@ -7,6 +7,10 @@ vi.mock('./components/HomePage', () => ({
     default: () => <div data-testid="home-page">HomePage</div>
 }));
 
+vi.mock('./components/ContactPage', () => ({
+    default: () => <div data-testid="contact-page">ContactPage</div>
+}));
+
 vi.mock('./components/ProductsPage', () => ({
     default: () => <div data-testid="products-page">ProductsPage</div>
 }));
@@ -54,6 +58,15 @@ describe('App', () => {
             </MemoryRouter>
         );
         expect(screen.getByTestId('products-page')).toBeInTheDocument();
+    });
+
+    it('renders ContactPage on /contact path', () => {
+        render(
+            <MemoryRouter initialEntries={['/contact']}>
+                <App />
+            </MemoryRouter>
+        );
+        expect(screen.getByTestId('contact-page')).toBeInTheDocument();
     });
 
     it('renders LoginPage on /login path', () => {

@@ -18,6 +18,7 @@ describe('Header', () => {
         expect(screen.getByText('Home')).toBeInTheDocument();
         expect(screen.getByText('Products')).toBeInTheDocument();
         expect(screen.getByText('Cart')).toBeInTheDocument();
+        expect(screen.getByText('Contact Us')).toBeInTheDocument();
     });
 
     it('renders admin login button', () => {
@@ -30,10 +31,12 @@ describe('Header', () => {
         const homeLink = screen.getByText('Home').closest('a');
         const productsLink = screen.getByText('Products').closest('a');
         const cartLink = screen.getByText('Cart').closest('a');
+        const contactLink = screen.getByText('Contact Us').closest('a');
         
         expect(homeLink).toHaveAttribute('href', '/');
         expect(productsLink).toHaveAttribute('href', '/products');
         expect(cartLink).toHaveAttribute('href', '/cart');
+        expect(contactLink).toHaveAttribute('href', '/contact');
     });
 
     it('admin login button link points to login page', () => {

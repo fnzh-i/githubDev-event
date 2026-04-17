@@ -24,6 +24,8 @@ describe('ContactPage', () => {
         );
 
         expect(screen.getByText('Contact Us')).toBeInTheDocument();
+        expect(screen.getByText('Issue inspiration from similar GitHub projects')).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: 'saleor/storefront' })).toBeInTheDocument();
         expect(screen.getByLabelText('Name')).toBeInTheDocument();
         expect(screen.getByLabelText('Email address')).toBeInTheDocument();
         expect(screen.getByLabelText('Issue')).toBeInTheDocument();
@@ -64,5 +66,18 @@ describe('ContactPage', () => {
         fireEvent.click(screen.getByText('Submit'));
 
         expect(screen.getByText('Thanks for reaching out! We will get back to you soon.')).toBeInTheDocument();
+    });
+
+    it('prefills issue field with inspiration ideas', () => {
+        render(
+            <MemoryRouter>
+                <ContactPage />
+            </MemoryRouter>
+        );
+
+        fireEvent.click(screen.getByRole('button', { name: 'Use these ideas in my issue' }));
+
+        expect(screen.getByDisplayValue(/Website improvement inspiration:/)).toBeInTheDocument();
+        expect(screen.getByDisplayValue(/1\. Add product filtering\/sorting/)).toBeInTheDocument();
     });
 });

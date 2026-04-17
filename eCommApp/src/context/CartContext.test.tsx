@@ -1,7 +1,7 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, beforeEach } from 'vitest';
-import React, { useContext } from 'react';
-import { CartProvider, CartContext, CartItem } from './CartContext';
+import { useContext } from 'react';
+import { CartProvider, CartContext } from './CartContext';
 import { Product } from '../types';
 
 const TestComponent = () => {
@@ -10,7 +10,7 @@ const TestComponent = () => {
         return <div>No context</div>;
     }
 
-    const { cartItems, addToCart, clearCart } = context;
+    const { cartItems, addToCart, incrementQuantity, decrementQuantity, clearCart } = context;
 
     const testProduct: Product = {
         id: '1',
@@ -42,6 +42,12 @@ const TestComponent = () => {
             </button>
             <button onClick={clearCart} data-testid="clear-cart">
                 Clear Cart
+            </button>
+            <button onClick={() => incrementQuantity('1')} data-testid="increment-product-1">
+                Increment Product 1
+            </button>
+            <button onClick={() => decrementQuantity('1')} data-testid="decrement-product-1">
+                Decrement Product 1
             </button>
             <div data-testid="cart-items-count">
                 {cartItems.length} items in cart
@@ -182,5 +188,48 @@ describe('CartContext', () => {
 
         const cartItem = screen.getByTestId('cart-item-1');
         expect(cartItem).toBeInTheDocument();
+    });
+
+    it('increments quantity for an item using incrementQuantity', () => {
+        render(
+            <CartProvider>
+                <TestComponent />
+            </CartProvider>
+        );
+
+        fireEvent.click(screen.getByTestId('add-product-1'));
+        fireEvent.click(screen.getByTestId('increment-product-1'));
+
+        const quantity = screen.getAllByText('2')[0];
+        expect(quantity).toBeInTheDocument();
+    });
+
+    it('decrements quantity for an item using decrementQuantity', () => {
+        render(
+            <CartProvider>
+                <TestComponent />
+            </CartProvider>
+        );
+
+        fireEvent.click(screen.getByTestId('add-product-1'));
+        fireEvent.click(screen.getByTestId('add-product-1'));
+        fireEvent.click(screen.getByTestId('decrement-product-1'));
+
+        const quantity = screen.getAllByText('1')[0];
+        expect(quantity).toBeInTheDocument();
+    });
+
+    it('removes item when quantity is decremented to zero', () => {
+        render(
+            <CartProvider>
+                <TestComponent />
+            </CartProvider>
+        );
+
+        fireEvent.click(screen.getByTestId('add-product-1'));
+        fireEvent.click(screen.getByTestId('decrement-product-1'));
+
+        expect(screen.getByText('0 items in cart')).toBeInTheDocument();
+        expect(screen.queryByTestId('cart-item-1')).not.toBeInTheDocument();
     });
 });

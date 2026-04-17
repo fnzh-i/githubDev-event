@@ -45,6 +45,8 @@ const mockCartItems: CartItem[] = [
 const mockCartContext = {
     cartItems: mockCartItems,
     addToCart: vi.fn(),
+    incrementQuantity: vi.fn(),
+    decrementQuantity: vi.fn(),
     clearCart: vi.fn()
 };
 
@@ -85,6 +87,16 @@ describe('CartPage', () => {
         renderWithCartContext();
         
         expect(screen.getByText('Checkout')).toBeInTheDocument();
+    });
+
+    it('calls increment and decrement handlers from quantity controls', () => {
+        renderWithCartContext();
+
+        fireEvent.click(screen.getByLabelText('Increase quantity of Test Product 1'));
+        fireEvent.click(screen.getByLabelText('Decrease quantity of Test Product 1'));
+
+        expect(mockCartContext.incrementQuantity).toHaveBeenCalledWith('1');
+        expect(mockCartContext.decrementQuantity).toHaveBeenCalledWith('1');
     });
 
     it('opens checkout modal when checkout button is clicked', () => {

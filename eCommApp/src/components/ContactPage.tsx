@@ -15,15 +15,15 @@ const ContactPage = () => {
                 <form onSubmit={handleSubmit}>
                     <div>
                         <label htmlFor="contact-name">Name</label>
-                        <input id="contact-name" name="name" type="text" />
+                        <input id="contact-name" name="name" type="text" required aria-required="true" />
                     </div>
                     <div>
                         <label htmlFor="contact-email">Email Address</label>
-                        <input id="contact-email" name="email" type="email" />
+                        <input id="contact-email" name="email" type="email" required aria-required="true" />
                     </div>
                     <div>
                         <label htmlFor="contact-issue">Issue</label>
-                        <textarea id="contact-issue" name="issue" rows={4} />
+                        <textarea id="contact-issue" name="issue" rows={4} required aria-required="true" />
                     </div>
                     <button type="submit">Submit</button>
                 </form>
